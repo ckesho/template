@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("androidx.navigation.safeargs.kotlin")
+
 }
 
 android {
@@ -49,6 +51,17 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+
+    // Jetpack Compose Integration
+    implementation(libs.androidx.navigation.compose)
+
+    // Views/Fragments Integration
+    implementation (libs.androidx.navigation.ui.ktx)
+
+    // JSON serialization library, works with the Kotlin serialization plugin.
+    implementation (libs.kotlinx.serialization.json)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
