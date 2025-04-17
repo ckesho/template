@@ -1,5 +1,6 @@
 package com.keshogroup.template.ui.screens
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -7,6 +8,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -26,12 +28,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.keshogroup.template.ui.navigation.MainDestinations
+import com.keshogroup.template.ui.navigation.homeNavigationGraph
 import com.keshogroup.template.ui.theme.TemplateTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView(modifier: Modifier = Modifier, navController: NavHostController?) {
+fun HomeView(modifier: Modifier = Modifier, navController: NavHostController, onConfirmClick:(String)->Unit, onCancelClick: (String)->Unit) {
 
         var presses by remember { mutableIntStateOf(0) }
     var selectedItem by remember { mutableIntStateOf(0) }
@@ -65,7 +69,7 @@ fun HomeView(modifier: Modifier = Modifier, navController: NavHostController?) {
                             label = { Text(mainDestinations.display) },
                             selected = selectedItem == index,
                             onClick = { selectedItem = index
-                                navController?.navigate(mainDestinations.route)
+                                navController.navigate(mainDestinations.route)
                             }
                         )
                     }
@@ -84,11 +88,32 @@ fun HomeView(modifier: Modifier = Modifier, navController: NavHostController?) {
             }
         ) { innerPadding ->
 
-                Greeting(
-                    name = "Chris Android template",
-                    modifier = Modifier.padding(innerPadding)
+//                Greeting(
+//                    name = "Chris Android template",
+//                    modifier = Modifier.padding(innerPadding)
+//                )
+            //navcontroller goes here
+//            homeNavigationGraph(modifier = Modifier.padding(innerPadding))
+            Column(modifier){
+                Text(
+                    text = "settingsViewF",
+                    modifier = modifier
                 )
-
+                Button(onClick ={ onConfirmClick(MainDestinations.LOGIN.route)},
+                    modifier = modifier){
+                    Text(
+                        text = "Confirm",
+                        modifier = modifier
+                    )
+                }
+//                Button(onClick ={ onCancelClick(MainDestinations.HOME.route)},
+//                    modifier = modifier){
+//                    Text(
+//                        text = "Cancel",
+//                        modifier = modifier
+//                    )
+//                }
+            }
         }
 
 }
@@ -102,8 +127,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun HomeViewPreview(modifier: Modifier = Modifier) {
+fun HomeViewPreview(modifier: Modifier = Modifier, navController: NavHostController = rememberNavController()) {
     TemplateTheme {
-        HomeView(modifier, navController = null)
+        HomeView(modifier, navController = navController, onCancelClick = {}, onConfirmClick = {})
     }
 }

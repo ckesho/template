@@ -57,10 +57,22 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     // Views/Fragments Integration
-    implementation (libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
     // JSON serialization library, works with the Kotlin serialization plugin.
-    implementation (libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.serialization.json)
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    //noinspection UseTomlInstead
+    implementation("com. squareup. retrofit2:converter-kotlinx-serialization:1.8.0")
+    //noinspection UseTomlInstead
+    implementation("com. squareup. okhttp3:logging-interceptor:4.12.0")
+    // Gson
+    //noinspection UseTomlInstead
+    implementation("com.google.code.gson:gson:2.10.1")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

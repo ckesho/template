@@ -23,5 +23,6 @@ enum class MainDestinations(
     HOME(route = "HOMEVIEW", display = "home", icon= Icons.Filled.Home, iconUnselected = Icons.Outlined.Home ),
     CONTACT_US(route = "CONTACTUSVIEW", display = "contact", icon= Icons.Filled.Call, iconUnselected = Icons.Outlined.Call ),
     SETTINGS(route = "SETTINGSVIEW", display = "setting", icon= Icons.Filled.Settings, iconUnselected = Icons.Outlined.Settings ),
+    LOGIN(route = "LOGINVIEW", display = "Login", icon= Icons.Filled.Face, iconUnselected = Icons.Outlined.Face ),
     ABOUT_US(route = "ABOUTUSVIEW", display = "about", icon= Icons.Filled.Face, iconUnselected = Icons.Outlined.Face ),
 }
