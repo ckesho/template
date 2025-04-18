@@ -74,6 +74,8 @@ dependencies {
     //noinspection UseTomlInstead
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     //noinspection UseTomlInstead
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    //noinspection UseTomlInstead
     implementation("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
     //noinspection UseTomlInstead
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")

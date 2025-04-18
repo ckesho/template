@@ -84,11 +84,11 @@ fun LoginView(
 //                        }
 //                    }
 
-//                    coroutineScope.launch {
-//                        loginViewModel.getTicker("PDD").collect { it ->
-//                            tickerFlowtet = it.toString()
-//                        }
-//                    }
+                    coroutineScope.launch {
+                        loginViewModel.getTicker("PDD").collect { it ->
+                            tickerFlowtet = it.toString()
+                        }
+                    }
                     coroutineScope.launch {
                         loginViewModel.getTickerV2("PDD").collect { it ->
                             tickerFlowtetV2 = it.toString()
