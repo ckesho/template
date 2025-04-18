@@ -3,6 +3,12 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("androidx.navigation.safeargs.kotlin")
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10"
+//    id("kotlinx-serialization")
+//    kotlin("jvm") version "2.11.0"
+//    kotlin("plugin.serialization") version "2.11.0"
+//    kotlin("jvm") version "2.1.20"
+//    kotlin("plugin.serialization") version "2.1.20"
 
 }
 
@@ -63,12 +69,14 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     // Retrofit
+    //noinspection UseTomlInstead
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     //noinspection UseTomlInstead
-    implementation("com. squareup. retrofit2:converter-kotlinx-serialization:1.8.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     //noinspection UseTomlInstead
-    implementation("com. squareup. okhttp3:logging-interceptor:4.12.0")
+    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
+    //noinspection UseTomlInstead
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     // Gson
     //noinspection UseTomlInstead
     implementation("com.google.code.gson:gson:2.10.1")
