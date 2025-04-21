@@ -43,6 +43,13 @@ val alphaVantageAPIRetrofitBuilder = Retrofit.Builder()
     val data: T,
 )
 
+sealed class Response<T> {
+    class Initial<T> : Response<T>()
+    class Loading<T> : Response<T>()
+    data class Success<T>(val data: T) : Response<T>()
+    data class Error<T>(val message: String) : Response<T>()
+}
+
 interface AlphaVantageAPICalls {
     @GET("query")
     suspend fun getTimeSeriesIntraday(
@@ -52,13 +59,14 @@ interface AlphaVantageAPICalls {
         @Query("symbol") symbol: String,
     ): JsonElement
 
-    @GET("query")
-    suspend fun getTimeSeriesIntradayV2(
-        @Query("function") function: String = "TIME_SERIES_INTRADAY",
-        @Query("apikey") apikey: String = API_KEY,
-        @Query("interval") interval: String = "5min",
-        @Query("symbol") symbol: String,
-    ): Flow<NetworkResponse<JsonElement>>
+    //USing Flow wont work without a lot of customization
+//    @GET("query")
+//    suspend fun getTimeSeriesIntradayV2(
+//        @Query("function") function: String = "TIME_SERIES_INTRADAY",
+//        @Query("apikey") apikey: String = API_KEY,
+//        @Query("interval") interval: String = "5min",
+//        @Query("symbol") symbol: String,
+//    ): Flow<NetworkResponse<JsonElement>>
 }
 
 

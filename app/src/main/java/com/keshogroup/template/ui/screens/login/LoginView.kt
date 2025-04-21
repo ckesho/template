@@ -1,5 +1,6 @@
 package com.keshogroup.template.ui.screens.login
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -78,20 +79,11 @@ fun LoginView(
             }
             Button(
                 onClick = {
-//                    coroutineScope.launch {
-//                        loginViewModel.tickerFlow.collect { it ->
-//                            ticker = it.toString()
-//                        }
-//                    }
 
                     coroutineScope.launch {
                         loginViewModel.getTicker("PDD").collect { it ->
                             tickerFlowtet = it.toString()
-                        }
-                    }
-                    coroutineScope.launch {
-                        loginViewModel.getTickerV2("PDD").collect { it ->
-                            tickerFlowtetV2 = it.toString()
+                            Log.i("Carmen", "LoginView: tickerFLowtet $tickerFlowtet")
                         }
                     }
                     tester = "PDD"
@@ -121,6 +113,6 @@ fun LoginView(
 @Composable
 fun viewPreview() {
     TemplateTheme {
-        LoginView("AboutUs", onConfirmClick = { }, onCancelClick = {})
+        LoginView("LoginView", onConfirmClick = {}, onCancelClick = {})
     }
 }
