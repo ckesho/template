@@ -14,6 +14,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.keshogroup.template.data.models.Ticker5Min
+import com.keshogroup.template.data.providers.Response
 import com.keshogroup.template.ui.navigation.MainDestinations
 import com.keshogroup.template.ui.theme.TemplateTheme
 import com.keshogroup.template.ui.viewmodels.LoginViewModel
@@ -82,8 +84,22 @@ fun LoginView(
 
                     coroutineScope.launch {
                         loginViewModel.getTicker("PDD").collect { it ->
-                            tickerFlowtet = it.toString()
-                            Log.i("Carmen", "LoginView: tickerFLowtet $tickerFlowtet")
+                            var results: Response<Ticker5Min> = Response.Initial<Ticker5Min>()
+                            results = it as Response<Ticker5Min>
+                            when (results) {
+                                is Response.Error<*> -> Log.i(
+                                    "Carmen",
+                                    "LoginView: ${results.message}"
+                                )
+
+                                is Response.Initial<*> -> Log.i("Carmen", "LoginView: initial")
+                                is Response.Loading<*> -> Log.i("Carmen", "LoginView: loading")
+                                is Response.Success<Ticker5Min> -> Log.i(
+                                    "Carmen",
+                                    "LoginView: ${results.data.metaData.the2Symbol}"
+                                )
+                            }
+
                         }
                     }
                     tester = "PDD"

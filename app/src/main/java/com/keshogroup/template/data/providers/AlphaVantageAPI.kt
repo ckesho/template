@@ -3,6 +3,7 @@ package com.keshogroup.template.data.providers
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
+import com.keshogroup.template.data.models.Ticker5Min
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -43,6 +44,7 @@ val alphaVantageAPIRetrofitBuilder = Retrofit.Builder()
     val data: T,
 )
 
+@Serializable
 sealed class Response<T> {
     class Initial<T> : Response<T>()
     class Loading<T> : Response<T>()
@@ -51,6 +53,7 @@ sealed class Response<T> {
 }
 
 interface AlphaVantageAPICalls {
+    //v1 just get the string or a json element
     @GET("query")
     suspend fun getTimeSeriesIntraday(
         @Query("function") function: String = "TIME_SERIES_INTRADAY",
@@ -59,14 +62,14 @@ interface AlphaVantageAPICalls {
         @Query("symbol") symbol: String,
     ): JsonElement
 
-    //USing Flow wont work without a lot of customization
-//    @GET("query")
-//    suspend fun getTimeSeriesIntradayV2(
-//        @Query("function") function: String = "TIME_SERIES_INTRADAY",
-//        @Query("apikey") apikey: String = API_KEY,
-//        @Query("interval") interval: String = "5min",
-//        @Query("symbol") symbol: String,
-//    ): Flow<NetworkResponse<JsonElement>>
+    //V2 use https://app.quicktype.io/ to create the model
+    @GET("query")
+    suspend fun getTimeSeriesIntradayV2(
+        @Query("function") function: String = "TIME_SERIES_INTRADAY",
+        @Query("apikey") apikey: String = API_KEY,
+        @Query("interval") interval: String = "5min",
+        @Query("symbol") symbol: String,
+    ): Ticker5Min
 }
 
 
