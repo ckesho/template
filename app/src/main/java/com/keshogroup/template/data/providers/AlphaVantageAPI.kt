@@ -4,11 +4,15 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import com.keshogroup.template.data.models.Ticker5Min
+import com.keshogroup.template.data.utilities.SafeRequestInterceptor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import okhttp3.Dispatcher
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -30,9 +34,11 @@ val gson: Gson = GsonBuilder()
 //    .enableComplexMapKeySerialization()
 //    .disableInnerClassSerialization()
     .create()
+val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(SafeRequestInterceptor()).build()
+
 val alphaVantageAPIRetrofitBuilder = Retrofit.Builder()
     .baseUrl(BASE_URL)
-    .client(OkHttpClient.Builder().build())
+    .client(client)
     .addConverterFactory(ScalarsConverterFactory.create())
     //THIS EVENTUALLY NEEDS TO BE USED
 //    .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
@@ -70,6 +76,15 @@ interface AlphaVantageAPICalls {
         @Query("interval") interval: String = "5min",
         @Query("symbol") symbol: String,
     ): Ticker5Min
+
+    //V3 use Call / Response to implement custom handling
+    @GET("query")
+    fun getTimeSeriesIntradayV3(
+        @Query("function") function: String = "TIME_SERIES_INTRADAY",
+        @Query("apikey") apikey: String = API_KEY,
+        @Query("interval") interval: String = "5min",
+        @Query("symbol") symbol: String,
+    ): Call<Ticker5Min>
 }
 
 

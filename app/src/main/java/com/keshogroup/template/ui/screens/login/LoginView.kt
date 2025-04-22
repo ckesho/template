@@ -89,14 +89,14 @@ fun LoginView(
                             when (results) {
                                 is Response.Error<*> -> Log.i(
                                     "Carmen",
-                                    "LoginView: ${results.message}"
+                                    "LoginView: Error ${results.message}"
                                 )
 
                                 is Response.Initial<*> -> Log.i("Carmen", "LoginView: initial")
                                 is Response.Loading<*> -> Log.i("Carmen", "LoginView: loading")
                                 is Response.Success<Ticker5Min> -> Log.i(
                                     "Carmen",
-                                    "LoginView: ${results.data.metaData.the2Symbol}"
+                                    "LoginView: Success ${results.data.metaData.the2Symbol}"
                                 )
                             }
 
