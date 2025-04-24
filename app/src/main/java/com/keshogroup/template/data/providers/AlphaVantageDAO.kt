@@ -42,21 +42,21 @@ class AlphaVantageDAO() :
 //    }
 
     // v3 convert to Call
-    override suspend fun getIntraDayStockInfo(ticker: String): Flow<Response<Ticker5Min>> {
+    override fun getIntraDayStockInfo(ticker: String): Flow<Response<Ticker5Min>> {
         return flow {
             //emit loading state
             emit(Response.Loading())
 
-            var tickerV2: Response<Ticker5Min> = AlphaVantageAPI
+            var tickerV3: Response<Ticker5Min> = AlphaVantageAPI
                 .calls
                 .getTimeSeriesIntradayV3(symbol = "PDD")
                 .execute()
                 .getCustomResponse()
 
-
             emit(
-                (tickerV2)
+                (tickerV3)
             )
+            //note you can use while true along with a delay to keep this flow going
 
         }.flowOn(Dispatchers.IO)
     }
@@ -64,5 +64,5 @@ class AlphaVantageDAO() :
 }
 
 interface alphaVantageRequests {
-    suspend fun getIntraDayStockInfo(ticker: String): Flow<Any>
+    fun getIntraDayStockInfo(ticker: String): Flow<Response<Ticker5Min>>
 }

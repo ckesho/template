@@ -8,6 +8,7 @@ import java.lang.Exception
 fun <T> Response<T>.getCustomResponse(): com.keshogroup.template.data.providers.Response<T> {
 
     try {
+        Log.i("Carmen", "getCustomResponse: Call Made to endpoint")
         if (this.isSuccessful) {
             this.body()?.let {
                 return com.keshogroup.template.data.providers.Response.Success(data = it)

@@ -20,12 +20,15 @@ import com.keshogroup.template.ui.screens.aboutUs
 import com.keshogroup.template.ui.screens.contactUs
 import com.keshogroup.template.ui.screens.login.LoginView
 import com.keshogroup.template.ui.screens.settingsViewF
+import com.keshogroup.template.ui.viewmodels.ActivityDiagnosticsViewModel
 import com.keshogroup.template.ui.viewmodels.LoginViewModel
 
 @Preview
 @Composable
 fun mainNavigationGraph(
-    modifier: Modifier = Modifier, navController: NavHostController = rememberNavController()
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    activityDiagnosticsViewModel: ActivityDiagnosticsViewModel
 ) {
     var onClick: (destination: String) -> Unit = {
         navController.navigate(it)
@@ -76,6 +79,7 @@ fun mainNavigationGraph(
         }
         dialog(route = MainDestinations.LOGIN.route) {
             LoginView(
+                activityDiagnosticsViewModel,
                 "Login View", modifier.padding(40.dp),
                 onCancelClick = onClick,
                 onConfirmClick = onClick,

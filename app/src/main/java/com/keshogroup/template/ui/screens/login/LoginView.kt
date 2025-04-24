@@ -1,30 +1,42 @@
 package com.keshogroup.template.ui.screens.login
 
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.keshogroup.template.data.models.Ticker5Min
 import com.keshogroup.template.data.providers.Response
 import com.keshogroup.template.ui.navigation.MainDestinations
 import com.keshogroup.template.ui.theme.TemplateTheme
+import com.keshogroup.template.ui.viewmodels.ActivityDiagnosticsViewModel
 import com.keshogroup.template.ui.viewmodels.LoginViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
 
 @Composable
 fun LoginView(
+    activityDiagnosticsViewModel: ActivityDiagnosticsViewModel = viewModel(viewModelStoreOwner = (LocalContext.current as Fragment).requireActivity()),
     name: String,
     modifier: Modifier = Modifier,
     onConfirmClick: (destination: String) -> Unit,
@@ -32,94 +44,114 @@ fun LoginView(
     loginViewModel: LoginViewModel = viewModel()
 ) {
 
+
     Dialog(
         onDismissRequest = {},
         properties = DialogProperties(
             dismissOnClickOutside = false,
             dismissOnBackPress = false,
-            usePlatformDefaultWidth = true,
+            usePlatformDefaultWidth = false,//for full screen set to false
             //turn this on to prevent sensitive data from being shared, screenshot, casted,
             securePolicy = SecureFlagPolicy.SecureOn
         )
     ) {
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
         val state by loginViewModel.loginStateFlow.collectAsStateWithLifecycle()
-        var ticker: String = ""
-        var tester: String = ""
-        var tickerFlow: Flow<Any> = loginViewModel.tickerFlow
-        var tickerFlowtet: String = ""
-        var tickerFlowtetV2: String = ""
+//        val tickerStateFlow = loginViewModel.tickerStateFlow.collectAsStateWithLifecycle()
+        //Creates a new view model every time this composable is created
+        val activityVM: ActivityDiagnosticsViewModel = viewModel()
+        //Grabs already created view model from the activity every time this composable is created. This is good if you do not want to constantly pass in the activity viewmodel as a parameter
+//        val activityVM: ActivityDiagnosticsViewModel = viewModel(viewModelStoreOwner = (LocalContext.current as Fragment).requireActivity())
+
+        val tickerStateFlow =
+            activityDiagnosticsViewModel.tickerStateFlow2.collectAsStateWithLifecycle()
 
 
         //do something with state
-        state.getValue()
-        Column(modifier) {
-            Text(
-                text = "LoginView",
-                modifier = modifier
-            )
-            Text(
-                text = "ticker $ticker",
-                modifier = Modifier
-            )
-            Text(
-                text = "tickerflowtet $tickerFlowtet",
-                modifier = Modifier
-            )
-            Text(
-                text = "tester $tester",
-                modifier = Modifier
-            )
-            Button(
-                onClick = { onConfirmClick(MainDestinations.HOME.route) },
-                modifier = Modifier
-            ) {
+        state.intialstate
+        val tickerState: Response<Ticker5Min> = tickerStateFlow.value
+        var tickerText: String = ""
+        when (tickerState) {
+            is Response.Initial<Ticker5Min> -> {
+                tickerText = "initializing"
+            }
+
+            is Response.Error<*> -> tickerText = tickerState.message
+            is Response.Loading<Ticker5Min> -> {
+                tickerText = "loading"
+            }
+
+            is Response.Success<Ticker5Min> -> {
+                tickerText = tickerState.data.metaData.the1Information
+            }
+        }
+        Box(modifier
+            .background(Color.Cyan)
+            .fillMaxSize()) {
+            Column(modifier
+                .background(Color.Cyan)
+                .fillMaxSize()) {
                 Text(
-                    text = "Confirm",
+                    text = "LoginView",
+                    modifier = modifier
+                )
+                Text(
+                    text = "ticker information ${tickerText}",
                     modifier = Modifier
                 )
-            }
-            Button(
-                onClick = {
 
-                    coroutineScope.launch {
-                        loginViewModel.getTicker("PDD").collect { it ->
-                            var results: Response<Ticker5Min> = Response.Initial<Ticker5Min>()
-                            results = it as Response<Ticker5Min>
-                            when (results) {
-                                is Response.Error<*> -> Log.i(
-                                    "Carmen",
-                                    "LoginView: Error ${results.message}"
-                                )
+                Button(
+                    onClick = { onConfirmClick(MainDestinations.HOME.route) },
+                    modifier = Modifier
+                ) {
+                    Text(
+                        text = "Confirm",
+                        modifier = Modifier
+                    )
+                }
+                Button(
+                    onClick = {
 
-                                is Response.Initial<*> -> Log.i("Carmen", "LoginView: initial")
-                                is Response.Loading<*> -> Log.i("Carmen", "LoginView: loading")
-                                is Response.Success<Ticker5Min> -> Log.i(
-                                    "Carmen",
-                                    "LoginView: Success ${results.data.metaData.the2Symbol}"
-                                )
+                        coroutineScope.launch {
+
+                            loginViewModel.getTickerAsFlow("PDD").collect { it ->
+                                var results: Response<Ticker5Min> = Response.Initial<Ticker5Min>()
+                                results = it as Response<Ticker5Min>
+                                when (results) {
+                                    is Response.Error<*> -> Log.i(
+                                        "Carmen",
+                                        "LoginView: Error ${results.message}"
+                                    )
+
+                                    is Response.Initial<*> -> Log.i("Carmen", "LoginView: initial")
+                                    is Response.Loading<*> -> Log.i("Carmen", "LoginView: loading")
+                                    is Response.Success<Ticker5Min> -> Log.i(
+                                        "Carmen",
+                                        "LoginView: Success ${results.data.metaData.the2Symbol}"
+                                    )
+                                }
+
                             }
-
                         }
-                    }
-                    tester = "PDD"
-                },
-                modifier = Modifier
-            ) {
-                Text(
-                    text = "ticker PDD",
+                    },
                     modifier = Modifier
-                )
-            }
-            Button(
-                onClick = { onCancelClick(MainDestinations.HOME.route) },
-                modifier = Modifier
-            ) {
-                Text(
-                    text = "Cancel",
+                ) {
+                    Text(
+                        text = "Click here",
+                        modifier = Modifier
+                    )
+                }
+                Button(
+                    onClick = { onCancelClick(MainDestinations.HOME.route) },
                     modifier = Modifier
-                )
+                ) {
+                    Text(
+                        text = "Cancel",
+                        modifier = Modifier
+                    )
+                }
             }
+
         }
     }
 
@@ -129,6 +161,6 @@ fun LoginView(
 @Composable
 fun viewPreview() {
     TemplateTheme {
-        LoginView("LoginView", onConfirmClick = {}, onCancelClick = {})
+        LoginView(name = "LoginView", onConfirmClick = {}, onCancelClick = {})
     }
 }

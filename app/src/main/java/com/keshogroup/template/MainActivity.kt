@@ -24,11 +24,10 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val activityViewModel:ActivityDiagnosticsViewModel by viewModels()
+        val activityViewModel: ActivityDiagnosticsViewModel by viewModels()
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                activityViewModel.activityStateFlow.collect{
-                    currentActivityState->
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                activityViewModel.activityStateFlow.collect { currentActivityState ->
                     //do something with state
                     currentActivityState
                 }
@@ -37,7 +36,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TemplateTheme {
-                mainNavigationGraph()
+                mainNavigationGraph(activityDiagnosticsViewModel = activityViewModel)
             }
         }
     }
