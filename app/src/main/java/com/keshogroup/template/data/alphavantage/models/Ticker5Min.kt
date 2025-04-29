@@ -1,17 +1,17 @@
-package com.keshogroup.template.data.models
+package com.keshogroup.template.data.alphavantage.models
 
 // To parse the JSON, install kotlin's serialization plugin and do:
 //
 // val json       = Json { allowStructuredMapKeys = true }
 // val ticker5Min = json.parse(Ticker5Min.serializer(), jsonString)
 
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.*
 
 
 /****  @SerializedName("Meta Data") //gson VS @SerializedName("Time Series (5min)") //json ***********/
 /***********We are using a gson parser in retrofit so we must used the gson annotations******************/
-
 @Serializable
 data class Ticker5Min(
     @SerializedName("Meta Data")

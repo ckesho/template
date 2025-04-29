@@ -5,9 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,15 +20,13 @@ import androidx.compose.ui.window.SecureFlagPolicy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.keshogroup.template.data.models.Ticker5Min
-import com.keshogroup.template.data.providers.Response
+import com.keshogroup.template.data.alphavantage.models.Ticker5Min
+import com.keshogroup.template.data.alphavantage.Response
 import com.keshogroup.template.ui.navigation.MainDestinations
 import com.keshogroup.template.ui.theme.TemplateTheme
 import com.keshogroup.template.ui.viewmodels.ActivityDiagnosticsViewModel
 import com.keshogroup.template.ui.viewmodels.LoginViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
@@ -85,12 +81,16 @@ fun LoginView(
                 tickerText = tickerState.data.metaData.the1Information
             }
         }
-        Box(modifier
-            .background(Color.Cyan)
-            .fillMaxSize()) {
-            Column(modifier
+        Box(
+            modifier
                 .background(Color.Cyan)
-                .fillMaxSize()) {
+                .fillMaxSize()
+        ) {
+            Column(
+                modifier
+                    .background(Color.Cyan)
+                    .fillMaxSize()
+            ) {
                 Text(
                     text = "LoginView",
                     modifier = modifier

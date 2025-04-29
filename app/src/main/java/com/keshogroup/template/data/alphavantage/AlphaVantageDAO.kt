@@ -1,7 +1,7 @@
-package com.keshogroup.template.data.providers
+package com.keshogroup.template.data.alphavantage
 
 import com.keshogroup.template.data.utilities.getCustomResponse
-import com.keshogroup.template.data.models.Ticker5Min
+import com.keshogroup.template.data.alphavantage.models.Ticker5Min
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

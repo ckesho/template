@@ -1,21 +1,15 @@
-package com.keshogroup.template.data.providers
+package com.keshogroup.template.data.alphavantage
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
-import com.keshogroup.template.data.models.Ticker5Min
+import com.keshogroup.template.data.alphavantage.models.Ticker5Min
 import com.keshogroup.template.data.utilities.SafeRequestInterceptor
-import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import okhttp3.Dispatcher
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 import retrofit2.http.GET

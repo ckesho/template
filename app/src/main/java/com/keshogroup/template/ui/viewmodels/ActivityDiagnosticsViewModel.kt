@@ -2,9 +2,9 @@ package com.keshogroup.template.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.keshogroup.template.data.models.Ticker5Min
-import com.keshogroup.template.data.providers.AlphaVantageDAO
-import com.keshogroup.template.data.providers.Response
+import com.keshogroup.template.data.alphavantage.models.Ticker5Min
+import com.keshogroup.template.data.alphavantage.AlphaVantageDAO
+import com.keshogroup.template.data.alphavantage.Response
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
