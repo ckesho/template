@@ -1,4 +1,4 @@
-package com.keshogroup.template.data.common.models
+package com.keshogroup.template.data.common.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

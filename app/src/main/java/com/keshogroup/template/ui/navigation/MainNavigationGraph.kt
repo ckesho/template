@@ -62,14 +62,14 @@ fun mainNavigationGraph(
         }
 
         composable(route = MainDestinations.ABOUT_US.route) { backStackEntry ->
-            //Eample of how to access a viewmodel in navigation
-            // Retrieve the NavBackStackEntry of "parentNavigationRoute"
-            val parentEntry: NavBackStackEntry = remember(backStackEntry) {
-                navController.getBackStackEntry("parentNavigationRoute")
-            }
-            // Get the ViewModel scoped to the `parentNavigationRoute` Nav graph
-            val parentViewModel: LoginViewModel = viewModel(parentEntry)
-            // ... pass in the vm or do something
+//            //Eample of how to access a viewmodel in navigation BUT THIS DOES NOT SEEM TO WORK
+//            // Retrieve the NavBackStackEntry of "parentNavigationRoute"
+//            val parentEntry: NavBackStackEntry = remember(backStackEntry) {
+//                navController.getBackStackEntry("parentNavigationRoute")
+//            }
+//            // Get the ViewModel scoped to the `parentNavigationRoute` Nav graph
+//            val parentViewModel: LoginViewModel = viewModel(parentEntry)
+//            // ... pass in the vm or do something
             aboutUs(
                 "aboutUs", modifier.padding(40.dp),
                 onCancelClick = onClick,

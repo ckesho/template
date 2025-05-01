@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.keshogroup.template.data.common.CommonDB
 import com.keshogroup.template.ui.navigation.mainNavigationGraph
 import com.keshogroup.template.ui.theme.TemplateTheme
 import com.keshogroup.template.ui.viewmodels.ActivityDiagnosticsViewModel
@@ -24,6 +25,8 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        CommonDB.setupDB(this)
         val activityViewModel: ActivityDiagnosticsViewModel by viewModels()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

@@ -7,7 +7,9 @@ package com.keshogroup.template.data.alphavantage.models
 
 import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
+import com.keshogroup.template.data.common.entities.Ticker5MinEntity
 import kotlinx.serialization.*
+import java.util.TreeMap
 
 
 /****  @SerializedName("Meta Data") //gson VS @SerializedName("Time Series (5min)") //json ***********/
@@ -18,8 +20,36 @@ data class Ticker5Min(
     val metaData: MetaData,
 
     @SerializedName("Time Series (5min)")
-    val timeSeries5Min: Map<String, TimeSeries5Min>
-)
+    val timeSeries5Min: Map<String, TimeSeries5Min>,
+) {
+    fun toEntity(): Ticker5MinEntity {
+        return Ticker5MinEntity(
+            the1Information = this.metaData.the1Information,
+            the2Symbol = this.metaData.the2Symbol,
+            the3LastRefreshed = this.metaData.the3LastRefreshed,
+            the4Interval = this.metaData.the4Interval,
+            the5OutputSize = this.metaData.the5OutputSize,
+            the6TimeZone = this.metaData.the6TimeZone,
+        )
+    }
+
+    companion object {
+        fun empty(): Ticker5Min {
+            return Ticker5Min(
+                metaData = MetaData(
+                    the2Symbol = "",
+                    the1Information = "",
+                    the3LastRefreshed = "",
+                    the4Interval = "",
+                    the5OutputSize = "",
+                    the6TimeZone = ""
+                ),
+                timeSeries5Min = TreeMap<String, TimeSeries5Min>()
+            )
+        }
+    }
+
+}
 
 @Serializable
 data class MetaData(

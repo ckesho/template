@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.keshogroup.template.data.alphavantage.models.Ticker5Min
-import com.keshogroup.template.data.common.models.User
+import com.keshogroup.template.data.common.entities.Ticker5MinEntity
+import com.keshogroup.template.data.common.entities.User
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -41,6 +41,12 @@ interface CommonDAO {
     fun findByNameAsFlow(first: String, last: String): Flow<User>
 
 
-//    @Insert
-//    suspend fun insertAllTickers(vararg users: Ticker5Min)
+    @Insert
+    suspend fun insertAllTickers(vararg users: Ticker5MinEntity)
+
+
+    @Query(
+        "SELECT * FROM ticker5minentity WHERE the2Symbol LIKE :ticker LIMIT 1"
+    )
+    fun findByTickerAsFlow(ticker: String): Flow<Ticker5MinEntity?>
 }

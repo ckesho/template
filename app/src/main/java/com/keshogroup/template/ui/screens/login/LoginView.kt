@@ -59,28 +59,33 @@ fun LoginView(
         //Grabs already created view model from the activity every time this composable is created. This is good if you do not want to constantly pass in the activity viewmodel as a parameter
 //        val activityVM: ActivityDiagnosticsViewModel = viewModel(viewModelStoreOwner = (LocalContext.current as Fragment).requireActivity())
 
-        val tickerStateFlow =
+        val tickerState =
             activityDiagnosticsViewModel.tickerStateFlow2.collectAsStateWithLifecycle()
 
 
         //do something with state
         state.intialstate
-        val tickerState: Response<Ticker5Min> = tickerStateFlow.value
+        val tickerStateValue: Response<Ticker5Min> = tickerState.value
         var tickerText: String = ""
-        when (tickerState) {
+        when (tickerStateValue) {
             is Response.Initial<Ticker5Min> -> {
                 tickerText = "initializing"
             }
 
-            is Response.Error<*> -> tickerText = tickerState.message
+            is Response.Error<*> -> tickerText = tickerStateValue.message
             is Response.Loading<Ticker5Min> -> {
                 tickerText = "loading"
             }
 
             is Response.Success<Ticker5Min> -> {
-                tickerText = tickerState.data.metaData.the1Information
+                tickerText = tickerStateValue.data.metaData.the1Information
             }
         }
+//// Practicing with db
+        var tickerFromDbValue = loginViewModel.getTickerAsFlowFromDB().collectAsStateWithLifecycle(
+            initialValue = Ticker5Min.empty()
+        ).value
+
         Box(
             modifier
                 .background(Color.Cyan)
@@ -97,6 +102,10 @@ fun LoginView(
                 )
                 Text(
                     text = "ticker information ${tickerText}",
+                    modifier = Modifier
+                )
+                Text(
+                    text = "ticker from DB Value ${tickerFromDbValue.metaData.the3LastRefreshed}",
                     modifier = Modifier
                 )
 
@@ -141,6 +150,22 @@ fun LoginView(
                         modifier = Modifier
                     )
                 }
+
+                Button(
+                    onClick = {
+
+                        coroutineScope.launch {
+                            loginViewModel.saveTicker()
+                        }
+                    },
+                    modifier = Modifier
+                ) {
+                    Text(
+                        text = "save to db",
+                        modifier = Modifier
+                    )
+                }
+
                 Button(
                     onClick = { onCancelClick(MainDestinations.HOME.route) },
                     modifier = Modifier
